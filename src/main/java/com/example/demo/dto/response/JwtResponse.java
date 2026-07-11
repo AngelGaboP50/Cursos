@@ -1,28 +1,33 @@
 package com.example.demo.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//Archivo de respuesta JWT
+//Sirve para responder al login y registro de usuarios
+//Tiene validaciones para el correo electrónico y la contraseña
+//Tiene validaciones para el nombre y la contraseña
+
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class JwtResponse {
+
     private String token;
-    @Builder.Default
-    private String type = "Bearer";
-    private Long userId;
     private String email;
-    private String name;
     private String role;
 
-    public JwtResponse(String token, Long userId, String email, String name, String role) {
+    public JwtResponse(String token, String email, String role) {
         this.token = token;
-        this.userId = userId;
         this.email = email;
-        this.name = name;
         this.role = role;
     }
+
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

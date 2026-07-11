@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+//Métodos para buscar usuarios por correo electrónico
+// y verificar si existe un usuario con ese correo electrónico
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);

@@ -2,53 +2,22 @@ package com.example.demo.dto.response;
 
 public class CourseDTO {
 
-	private Long id;
-	private String title;
-	private String description;
-	private String level;
-	private Double price;
-	private Boolean published;
-	private String imageUrl;
+    private Long id;
+    private String name;
+    private String description;
+    private String teacherName;
+    private Integer credits;
 
-	public CourseDTO() {
-	}
+    public CourseDTO() {}
 
-	public CourseDTO(Long id, String title, String description, String level, Double price, Boolean published, String imageUrl) {
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.level = level;
-		this.price = price;
-		this.published = published;
-		this.imageUrl = imageUrl;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public String getLevel() {
-		return level;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public Boolean getPublished() {
-		return published;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getTeacherName() { return teacherName; }
+    public void setTeacherName(String teacherName) { this.teacherName = teacherName; }
+    public Integer getCredits() { return credits; }
+    public void setCredits(Integer credits) { this.credits = credits; }
 }

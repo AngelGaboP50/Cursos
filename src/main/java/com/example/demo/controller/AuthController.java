@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.RegisterRequest;
-import com.example.demo.dto.response.JwtResponse;
+import com.example.demo.dto.response.UserResponse;
 import com.example.demo.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,12 +19,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JwtResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
     }
 }

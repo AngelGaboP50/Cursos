@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local secrets and database backups
+.env
+.env.*
+!.env.example
+backups/
+*.dump
+*.backup
+*.log
+application-local.properties

@@ -1,6 +1,8 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
+import com.example.demo.model.User;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,64 +10,51 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
 
 @Component
 public class JwtProvider {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    private final SecretKey signingKey;
+    private final long expirationMs;
 
-    @Value("${jwt.expiration-ms}")
-    private long jwtExpirationMs;
-
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    public JwtProvider(@Value("${jwt.secret}") String secret,
+                       @Value("${jwt.expiration-ms}") long expirationMs) {
+        this.signingKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationMs = expirationMs;
     }
 
-    /**
-     * Genera un token JWT a partir del email del usuario.
-     */
-    public String generateToken(String email) {
+    public String generateToken(User user) {
+        Instant now = Instant.now();
         return Jwts.builder()
-                .subject(email)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(getSigningKey())
+                .subject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("role", user.getRole().name())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plusMillis(expirationMs)))
+                .signWith(signingKey)
                 .compact();
     }
 
-    /**
-     * Extrae el email (subject) del token.
-     */
     public String getEmailFromToken(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+        return Jwts.parser().verifyWith(signingKey).build()
+                .parseSignedClaims(token).getPayload().getSubject();
     }
 
-    /**
-     * Valida si el token es válido y corresponde al usuario.
-     */
     public boolean validateToken(String token, UserDetails userDetails) {
         try {
-            String email = getEmailFromToken(token);
-            return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
-        } catch (JwtException | IllegalArgumentException e) {
+            var claims = Jwts.parser().verifyWith(signingKey).build()
+                    .parseSignedClaims(token).getPayload();
+            return claims.getSubject().equalsIgnoreCase(userDetails.getUsername())
+                    && claims.getExpiration().after(new Date())
+                    && userDetails.isEnabled();
+        } catch (JwtException | IllegalArgumentException exception) {
             return false;
         }
     }
 
-    private boolean isTokenExpired(String token) {
-        Date expiration = Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration();
-        return expiration.before(new Date());
+    public long getExpirationMs() {
+        return expirationMs;
     }
 }

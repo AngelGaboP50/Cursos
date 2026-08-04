@@ -1,54 +1,40 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.LoginRequest;
+import com.example.demo.dto.request.RegisterRequest;
 import com.example.demo.dto.response.JwtResponse;
+import com.example.demo.dto.response.UserResponse;
 import com.example.demo.service.AuthService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
-    /**
-     * POST /api/auth/login
-     *
-     * Body (JSON):
-     * {
-     *   "email": "usuario@ejemplo.com",
-     *   "password": "miContraseña123"
-     * }
-     *
-     * Response 200:
-     * {
-     *   "token": "eyJhbGc...",
-     *   "type": "Bearer",
-     *   "userId": 1,
-     *   "email": "usuario@ejemplo.com",
-     *   "name": "Juan Pérez",
-     *   "role": "STUDENT"
-     * }
-     */
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        try {
-            JwtResponse jwtResponse = authService.login(loginRequest);
-            return ResponseEntity.ok(jwtResponse);
-        } catch (BadCredentialsException e) {
-            return ResponseEntity
-                    .status(401)
-                    .body(Map.of(
-                            "error", "Credenciales inválidas",
-                            "message", "El email o la contraseña son incorrectos"
-                    ));
-        }
+    public JwtResponse login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.noContent().build();
     }
 }

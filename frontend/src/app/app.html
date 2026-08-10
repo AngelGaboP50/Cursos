@@ -1,0 +1,19 @@
+<header class="topbar">
+  <a class="brand" routerLink="/" aria-label="Cursos, inicio"><span class="brand-mark">C</span><span>Cursos</span></a>
+  <nav aria-label="Navegación principal">
+    <a routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">Catálogo</a>
+    @if (auth.authenticated()) {
+      <a routerLink="/my-courses" routerLinkActive="active">Mis cursos</a>
+      <a routerLink="/favorites" routerLinkActive="active">Favoritos</a>
+      <a routerLink="/notifications" routerLinkActive="active">Avisos</a>
+      <a routerLink="/account" routerLinkActive="active">Perfil</a>
+      @if (auth.isAdmin()) { <a routerLink="/admin" routerLinkActive="active">Administrar</a> }
+      <button class="link-button" type="button" (click)="logout()">Salir</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Ingresar</a>
+      <a class="nav-cta" routerLink="/register">Crear cuenta</a>
+    }
+  </nav>
+</header>
+<main class="page-shell"><router-outlet /></main>
+<footer>Plataforma Cursos · Angular + API Gateway + Eureka + Spring Boot + PostgreSQL</footer>

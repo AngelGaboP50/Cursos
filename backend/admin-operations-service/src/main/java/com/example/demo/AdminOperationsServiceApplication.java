@@ -1,0 +1,1 @@
+package com.example.demo; import org.springframework.boot.*; import org.springframework.boot.autoconfigure.*; @SpringBootApplication public class AdminOperationsServiceApplication{public static void main(String[]a){SpringApplication.run(AdminOperationsServiceApplication.class,a);}}

@@ -1,0 +1,2 @@
+package com.example.demo.controller; import org.springframework.security.core.Authentication; import org.springframework.web.bind.annotation.*; import java.util.Map;
+@RestController @RequestMapping("/api/admin") public class AdminSecurityController {@GetMapping("/security-check") Map<String,String> check(Authentication a){return Map.of("message","Acceso administrativo autorizado","user",a.getName());}}

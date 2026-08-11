@@ -1,0 +1,8 @@
+1) eureka-server :8761
+2) api-gateway :8080
+3) auth-user-service :8081
+4) course-service :8082
+5) enrollment-service :8083
+6) engagement-service :8084
+7) admin-operations-service :8085
+8) frontend :4200

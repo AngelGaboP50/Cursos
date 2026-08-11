@@ -1,31 +1,18 @@
 package com.example.demo.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
+import org.springframework.web.cors.*;
 import java.util.List;
-
-@Configuration
-public class CorsConfig {
-
-    /**
-     * Permite solicitudes desde cualquier origen (útil para desarrollo).
-     * En producción, reemplaza "*" con la URL de tu frontend.
-     */
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return new CorsFilter(source);
+@Configuration public class CorsConfig  {
+    @Bean CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed-origin}") String origin) {
+        CorsConfiguration c=new CorsConfiguration();
+        c.setAllowedOrigins(List.of(origin));
+        c.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        c.setAllowedHeaders(List.of("Authorization","Content-Type","Accept","X-Internal-Secret"));
+        c.setAllowCredentials(true);
+        c.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource s=new UrlBasedCorsConfigurationSource();
+        s.registerCorsConfiguration("/**",c);
+        return s;
     }
 }

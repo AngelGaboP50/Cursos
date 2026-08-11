@@ -1,0 +1,11 @@
+# Copia este archivo como local-env.ps1 (queda ignorado por Git) y cambia los valores.
+$env:DB_USERNAME='postgres'
+$env:DB_PASSWORD='CAMBIA_TU_PASSWORD_POSTGRES'
+$env:JWT_SECRET='CAMBIA_ESTE_SECRETO_POR_48_O_MAS_CARACTERES_1234567890'
+$env:INTERNAL_SECRET='CAMBIA_ESTE_SECRETO_INTERNO_1234567890'
+$env:EUREKA_URL='http://localhost:8761/eureka/'
+$env:FRONTEND_URL='http://localhost:4200'
+$env:JWT_EXPIRATION_MS='3600000'
+$env:DEMO_DATA_ENABLED='true'
+$env:DEMO_ADMIN_EMAIL='admin@demo.com'
+$env:DEMO_ADMIN_PASSWORD='Admin1234'

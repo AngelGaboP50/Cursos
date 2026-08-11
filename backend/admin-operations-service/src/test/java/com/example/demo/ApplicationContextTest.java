@@ -1,0 +1,1 @@
+package com.example.demo; import org.junit.jupiter.api.Test; import org.springframework.boot.test.context.SpringBootTest; @SpringBootTest(classes=AdminOperationsServiceApplication.class) class ApplicationContextTest{@Test void contextLoads(){}}

@@ -1,0 +1,19 @@
+<section class="hero wide-panel">
+  <div><span class="eyebrow">EPIC02 · Catálogo</span><h1>Aprende con una ruta clara.</h1><p class="lede">Explora cursos publicados, filtra por categoría y abre el detalle antes de inscribirte.</p></div>
+  <form class="search-form" (ngSubmit)="search()">
+    <label for="query">Buscar</label><input id="query" name="query" [(ngModel)]="query" placeholder="Java, Angular, seguridad…">
+    <label for="category">Categoría</label><select id="category" name="category" [(ngModel)]="category"><option value="">Todas</option>@for (item of categories(); track item) { <option [value]="item">{{ item }}</option> }</select>
+    <button type="submit">Aplicar filtros</button>
+  </form>
+</section>
+@if (error()) { <p class="alert">{{ error() }}</p> }
+@if (loading()) { <p class="empty">Cargando cursos…</p> } @else {
+  <section class="course-grid" aria-label="Cursos disponibles">
+    @for (course of courses(); track course.id) {
+      <article class="course-card">
+        <img [src]="course.imageUrl || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644'" [alt]="course.title">
+        <div class="card-body"><div class="chips"><span>{{ course.category }}</span><span>{{ course.level }}</span></div><h2>{{ course.title }}</h2><p>{{ course.description }}</p><div class="card-footer"><strong>{{ course.price === 0 ? 'Gratis' : (course.price | currency:'MXN') }}</strong><a class="button secondary" [routerLink]="['/courses', course.id]">Ver curso</a></div></div>
+      </article>
+    } @empty { <p class="empty">No hay cursos que coincidan con los filtros.</p> }
+  </section>
+}

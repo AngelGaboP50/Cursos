@@ -1,0 +1,1 @@
+package com.example.demo.exception; public class InternalAccessDeniedException extends RuntimeException { public InternalAccessDeniedException(){super("Acceso interno no autorizado");} }

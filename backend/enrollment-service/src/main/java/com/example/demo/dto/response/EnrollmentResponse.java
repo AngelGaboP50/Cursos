@@ -1,0 +1,2 @@
+package com.example.demo.dto.response; import com.example.demo.model.Enrollment; import java.time.Instant;
+public record EnrollmentResponse(Long id,CourseDTO course,String status,int progressPercent,Instant enrollmentDate,Instant updatedAt){public static EnrollmentResponse from(Enrollment e){return new EnrollmentResponse(e.getId(),e.course(),e.getStatus().name(),e.getProgressPercent(),e.getEnrollmentDate(),e.getUpdatedAt());}}
